@@ -26,8 +26,10 @@ jobs:
 
       - name: Setup vcpkg
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          ./vcpkg/bootstrap-vcpkg.sh
+          git clone --depth 1 https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          git fetch --unshallow
+          ./bootstrap-vcpkg.sh
 
       - name: Cache vcpkg packages
         uses: actions/cache@v4
@@ -65,4 +67,3 @@ jobs:
         with:
           args: >
             --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"
-
