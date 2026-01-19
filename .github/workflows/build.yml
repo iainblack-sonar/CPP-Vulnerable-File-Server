@@ -22,7 +22,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ninja-build
+          sudo apt-get install -y ninja-build gcovr
 
       - name: Setup vcpkg
         run: |
@@ -40,12 +40,13 @@ jobs:
           restore-keys: |
             vcpkg-${{ runner.os }}-
 
-      - name: Configure CMake
+      - name: Configure CMake with Coverage
         run: |
           cmake -B build -S . \
             -DCMAKE_TOOLCHAIN_FILE=${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+            -DENABLE_COVERAGE=ON
 
       - name: Install Build Wrapper
         uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v6
@@ -58,10 +59,20 @@ jobs:
         run: |
           cd build && ctest --output-on-failure
 
+      - name: Generate Coverage Report
+        run: |
+          cd build
+          # Generate gcov files
+          gcovr --sonarqube coverage.xml --root ../src -e '../tests/.*' -e '.*vcpkg_installed.*'
+          # Also generate detailed report for debugging
+          gcovr --html-details coverage.html --root ../src -e '../tests/.*' -e '.*vcpkg_installed.*'
+          ls -la coverage.*
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            --define "sonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"
+            -Dsonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json
+            -Dsonar.coverageReportPaths=build/coverage.xml
