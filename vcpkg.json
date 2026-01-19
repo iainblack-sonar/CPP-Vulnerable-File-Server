@@ -2,7 +2,7 @@
   "name": "cpp-vulnerable-file-server",
   "version-string": "1.0.0",
   "description": "A C++ project for SCA vulnerability demonstration",
-  "builtin-baseline": "a91c2d160f4fe7b67dccc5df7ff30001af64b0e1",
+  "builtin-baseline": "de51e6bfa96e1245f2a969a8cde249baac89f7be",
   "dependencies": [
     "openssl",
     "sqlite3",
@@ -14,27 +14,27 @@
   "overrides": [
     {
       "name": "openssl",
-      "version": "3.0.3"
+      "version": "3.0.8"
     },
     {
       "name": "sqlite3",
-      "version": "3.37.2"
+      "version": "3.39.2"
     },
     {
       "name": "gtest",
-      "version": "1.11.0"
+      "version": "1.12.1"
     },
     {
       "name": "curl",
-      "version": "7.83.1"
+      "version": "7.86.0"
     },
     {
       "name": "libxml2",
-      "version": "2.9.14"
+      "version": "2.10.3"
     },
     {
       "name": "expat",
-      "version": "2.4.8"
+      "version": "2.4.9"
     }
   ]
 }
