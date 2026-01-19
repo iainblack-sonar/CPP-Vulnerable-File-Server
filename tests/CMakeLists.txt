@@ -3,8 +3,11 @@
 # Collect test source files
 file(GLOB_RECURSE TEST_SOURCES "*.cpp")
 
+# Include Utils.cpp for testing
+set(UTILS_SOURCE ${CMAKE_SOURCE_DIR}/src/Utils.cpp)
+
 # Create test executable
-add_executable(${PROJECT_NAME}_tests ${TEST_SOURCES})
+add_executable(${PROJECT_NAME}_tests ${TEST_SOURCES} ${UTILS_SOURCE})
 
 # Include project headers
 target_include_directories(${PROJECT_NAME}_tests 
@@ -22,4 +25,3 @@ target_link_libraries(${PROJECT_NAME}_tests
 # Register tests with CTest
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}_tests)
-
