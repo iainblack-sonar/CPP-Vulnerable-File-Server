@@ -1,0 +1,10 @@
+{
+  "name": "cpp-vulnerable-file-server",
+  "version-string": "1.0.0",
+  "description": "A C++ project for SCA vulnerability demonstration",
+  "dependencies": [
+    "openssl",
+    "sqlite3",
+    "gtest"
+  ]
+}
