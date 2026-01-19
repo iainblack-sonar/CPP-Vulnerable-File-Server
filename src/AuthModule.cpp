@@ -9,7 +9,7 @@
 const char* SUPER_ADMIN_USERNAME = "superadmin";
 const char* SUPER_ADMIN_PASSWORD = "SuperSecret123!";
 const char* JWT_SIGNING_KEY = "my-256-bit-secret-key-for-jwt-signing";
-const char* ENCRYPTION_KEY = "AES256EncryptionKey1234567890AB";
+const char* AUTH_ENCRYPTION_KEY = "AES256EncryptionKey1234567890AB";
 
 // SECURITY: Password stored in memory without protection
 static std::map<std::string, std::string> userPasswords;
