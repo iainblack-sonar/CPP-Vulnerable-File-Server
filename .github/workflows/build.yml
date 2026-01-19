@@ -59,14 +59,17 @@ jobs:
         run: |
           cd build && ctest --output-on-failure
 
-      - name: Generate Coverage Report
+      - name: Generate gcov coverage files
         run: |
-          cd build
-          # Generate gcov files
-          gcovr --sonarqube coverage.xml --root ../src -e '../tests/.*' -e '.*vcpkg_installed.*'
-          # Also generate detailed report for debugging
-          gcovr --html-details coverage.html --root ../src -e '../tests/.*' -e '.*vcpkg_installed.*'
-          ls -la coverage.*
+          # Create coverage reports directory
+          mkdir -p coverage-reports
+          # Find all .gcda files and run gcov on corresponding source files
+          find build -name "*.gcda" -exec gcov -p -b {} \;
+          # Move all .gcov files to coverage-reports directory
+          find . -maxdepth 1 -name "*.gcov" -exec mv {} coverage-reports/ \;
+          # List coverage files for debugging
+          echo "Coverage files generated:"
+          ls -la coverage-reports/
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v6
@@ -75,4 +78,4 @@ jobs:
         with:
           args: >
             -Dsonar.cfamily.compile-commands=${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json
-            -Dsonar.coverageReportPaths=build/coverage.xml
+            -Dsonar.cfamily.gcov.reportsPath=coverage-reports
