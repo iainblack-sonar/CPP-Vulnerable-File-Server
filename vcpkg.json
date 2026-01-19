@@ -4,17 +4,22 @@
   "description": "A C++ project for SCA vulnerability demonstration",
   "builtin-baseline": "de51e6bfa96e1245f2a969a8cde249baac89f7be",
   "dependencies": [
+    "openssl",
+    "sqlite3",
+    "gtest"
+  ],
+  "overrides": [
     {
       "name": "openssl",
-      "version>=": "3.6.0"
+      "version": "3.6.0"
     },
     {
       "name": "sqlite3",
-      "version>=": "3.51.2"
+      "version": "3.51.2"
     },
     {
       "name": "gtest",
-      "version>=": "1.17.0"
+      "version": "1.17.0"
     }
   ]
 }
